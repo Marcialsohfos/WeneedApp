@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - WeneedApp</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Section de protection d'accès -->
+    <div id="accessDenied" style="display: none; text-align: center; padding: 4rem; background: white; min-height: 100vh;">
+        <div class="container">
+            <i class="fas fa-lock fa-4x" style="color: #e74c3c; margin-bottom: 2rem;"></i>
+            <h2>Accès Refusé</h2>
+            <p>Vous devez être connecté en tant qu'administrateur pour accéder à cette page.</p>
+            <a href="login.html" class="cta-button" style="margin-top: 2rem;">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </a>
+            <div style="margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 8px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <h4>Informations de connexion admin :</h4>
+                <p><strong>Code administrateur :</strong> 13245@10001a</p>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 1rem;">
+                    Sélectionnez "Administrateur" sur la page de connexion et entrez le code ci-dessus.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu admin protégé -->
+    <div class="admin-protected">
+        <header>
+            <nav class="navbar">
+                <div class="nav-container">
+                    <div class="logo">
+                        <h1><i class="fas fa-cogs"></i> WeneedApp Admin</h1>
+                    </div>
+                    <ul class="nav-menu">
+                        <li><a href="index.html">Retour à l'appli</a></li>
+                        <li><a href="#dashboard">Tableau de bord</a></li>
+                        <li><a href="#gestion">Gestion</a></li>
+                        <li><a href="#commandes">Commandes</a></li>
+                        <li><a href="#utilisateurs">Utilisateurs</a></li>
+                        <!-- Navigation admin sera ajoutée dynamiquement -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-main">
+            <section id="dashboard" class="admin-section">
+                <div class="container">
+                    <h2>Tableau de bord</h2>
+                    <div class="admin-welcome">
+                        <div class="welcome-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Session Administrateur Active</h3>
+                            <p>Vous avez accès à toutes les fonctionnalités de gestion</p>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Services enregistrés</h3>
+                            <p id="totalServices">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Commandes aujourd'hui</h3>
+                            <p id="todayOrders">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Utilisateurs</h3>
+                            <p id="totalUsers">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Régions couvertes</h3>
+                            <p id="regionsCovered">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gestion" class="admin-section">
+                <div class="container">
+                    <h2>Gestion des services</h2>
+                    <div class="admin-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="ajouter">Ajouter un service</button>
+                            <button class="tab-btn" data-tab="modifier">Modifier/Supprimer</button>
+                        </div>
+                        
+                        <div id="ajouter" class="tab-content active">
+                            <form id="addServiceForm" class="admin-form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="serviceCategory">Catégorie:</label>
+                                    <select id="serviceCategory" required onchange="toggleImageRequirements()">
+                                        <option value="">Sélectionnez une catégorie</option>
+                                        <option value="hotel">Hôtel</option>
+                                        <option value="agence-voyage">Agence de voyage</option>
+                                        <option value="engin-lourd">Engin lourd</option>
+                                        <option value="formation">Centre de formation</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="serviceName">Nom:</label>
+                                    <input type="text" id="serviceName" required>
+                                </div>
+
+                                <!-- Section Upload d'Images -->
+                                <div class="form-group">
+                                    <label>Images du service:</label>
+                                    <div class="upload-section">
+                                        <div class="upload-area" id="uploadArea">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Glissez-déposez vos images ici ou cliquez pour parcourir</p>
+                                            <span class="upload-info">Formats acceptés: JPG, PNG, WEBP (max 2MB)</span>
+                                            <input type="file" id="serviceImages" multiple accept=".jpg,.jpeg,.png,.webp" style="display: none;">
+                                            <button type="button" class="browse-btn" onclick="document.getElementById('serviceImages').click()">
+                                                Parcourir les fichiers
+                                            </button>
+                                        </div>
+                                        <div id="imagePreview" class="image-preview"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Informations supplémentaires selon la catégorie -->
+                                <div id="hotelFields" class="category-fields" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="hotelStars">Nombre d'étoiles:</label>
+                                        <select id="hotelStars">
+                                            <option value="1">⭐</option>
+                                            <option value="2">⭐⭐</option>
+                                            <option value="3">⭐⭐⭐</option>
+                                            <option value="4">⭐⭐⭐⭐</option>
+                                            <option value="5">⭐⭐⭐⭐⭐</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Aménités:</label>
+                                        <div class="amenities-checkboxes">
+                                            <label><input type="checkbox" name="amenities" value="wifi"> WiFi</label>
+                                            <label><input type="checkbox" name="amenities" value="piscine"> Piscine</label>
+                                            <label><input type="checkbox" name="amenities" value="restaurant"> Restaurant</label>
+                                            <label><input type="checkbox" name="amenities" value="parking"> Parking</label>
+                                            <label><input type="checkbox" name="amenities" value="climatisation"> Climatisation</label>
+                                            <label><input type="checkbox" name="amenities" value="spa"> Spa</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceRegion">Région:</label>
+                                    <select id="serviceRegion" required>
+                                        <option value="">Sélectionnez une région</option>
+                                        <option value="adamaoua">Adamaoua</option>
+                                        <option value="centre">Centre</option>
+                                        <option value="est">Est</option>
+                                        <option value="extreme-nord">Extrême-Nord</option>
+                                        <option value="littoral">Littoral</option>
+                                        <option value="nord">Nord</option>
+                                        <option value="nord-ouest">Nord-Ouest</option>
+                                        <option value="ouest">Ouest</option>
+                                        <option value="sud">Sud</option>
+                                        <option value="sud-ouest">Sud-Ouest</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceDepartment">Département:</label>
+                                    <select id="serviceDepartment" required>
+                                        <option value="">Sélectionnez un département</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceCity">Ville:</label>
+                                    <select id="serviceCity" required>
+                                        <option value="">Sélectionnez une ville</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceAddress">Adresse exacte:</label>
+                                    <input type="text" id="serviceAddress" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="servicePrice">Prix (FCFA):</label>
+                                    <input type="number" id="servicePrice" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceDescription">Description:</label>
+                                    <textarea id="serviceDescription" rows="4" required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serviceContact">Contact:</label>
+                                    <input type="text" id="serviceContact" required>
+                                </div>
+
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-plus-circle"></i> Ajouter le service
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div id="modifier" class="tab-content">
+                            <div class="search-bar">
+                                <input type="text" id="searchService" placeholder="Rechercher un service...">
+                                <button id="searchServiceBtn">Rechercher</button>
+                            </div>
+                            <div id="servicesList" class="services-list">
+                                <!-- Liste des services à modifier/supprimer -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="commandes" class="admin-section">
+                <div class="container">
+                    <h2>Gestion des commandes</h2>
+                    <div class="orders-table-container">
+                        <table id="ordersTable" class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Les commandes seront affichées ici -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="utilisateurs" class="admin-section">
+                <div class="container">
+                    <h2>Gestion des utilisateurs</h2>
+                    <div class="users-table-container">
+                        <table id="usersTable" class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Première connexion</th>
+                                    <th>Dernière connexion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Les utilisateurs seront affichés ici -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Contactez-nous</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Notre équipe est à votre écoute</h3>
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <h4>Site Web</h4>
+                                <p><a href="https://www.scsmaubmar.org" target="_blank">www.scsmaubmar.org</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email de support</h4>
+                                <p><a href="mailto:support@scsmaubmar.org">support@scsmaubmar.org</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Téléphone</h4>
+                                <p>+237 XXX XXX XXX</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Heures d'ouverture</h4>
+                                <p>Lun - Ven: 8h00 - 18h00</p>
+                                <p>Sam: 9h00 - 13h00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="contactName">Nom complet *</label>
+                                <input type="text" id="contactName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email *</label>
+                                <input type="email" id="contactEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactSubject">Sujet *</label>
+                                <input type="text" id="contactSubject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">Message *</label>
+                                <textarea id="contactMessage" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Envoyer le message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-bottom">
+                    <p>&copy; 2025 WeneedApp. Tous droits réservés.</p>
+                    <p>Power by <a href="https://www.scsmaubmar.org" target="_blank">SCS MauBmar</a> | 
+                       <a href="mailto:support@scsmaubmar.org">Support technique</a></p>
+                </div>
+            </div>
+        </footer>
+    </div> <!-- Fin du contenu admin protégé -->
+
+    <script src="script.js"></script>
+    <script src="config.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeneedApp - Connecteur de Services au Cameroun</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- En-tête -->
+    <header>
+ <nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h1><i class="fas fa-handshake"></i> WeneedApp</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#regions">Régions</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <!-- La partie utilisateur/admin sera ajoutée dynamiquement -->
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+    </header>
+
+    <!-- Section Hero -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1>Connectez-vous aux services essentiels au Cameroun</h1>
+            <p>Hôtels, Agences de voyages, Engins lourds, Formations - Tout en un seul endroit</p>
+            <button class="cta-button" id="explorerBtn">Explorer les services</button>
+        </div>
+    </section>
+
+    <!-- Filtres de recherche -->
+    <section class="filters">
+        <div class="container">
+            <h2>Trouvez ce dont vous avez besoin</h2>
+            <div class="filter-form">
+                <div class="filter-group">
+                    <label for="region">Région:</label>
+                    <select id="region">
+                        <option value="">Sélectionnez une région</option>
+                        <option value="adamaoua">Adamaoua</option>
+                        <option value="centre">Centre</option>
+                        <option value="est">Est</option>
+                        <option value="extreme-nord">Extrême-Nord</option>
+                        <option value="littoral">Littoral</option>
+                        <option value="nord">Nord</option>
+                        <option value="nord-ouest">Nord-Ouest</option>
+                        <option value="ouest">Ouest</option>
+                        <option value="sud">Sud</option>
+                        <option value="sud-ouest">Sud-Ouest</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="departement">Département:</label>
+                    <select id="departement">
+                        <option value="">Sélectionnez un département</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="ville">Ville:</label>
+                    <select id="ville">
+                        <option value="">Sélectionnez une ville</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="service">Service:</label>
+                    <select id="service">
+                        <option value="">Sélectionnez un service</option>
+                        <option value="hotel">Hôtels</option>
+                        <option value="agence-voyage">Agences de voyage</option>
+                        <option value="engin-lourd">Engins lourds</option>
+                        <option value="formation">Centres de formation</option>
+                    </select>
+                </div>
+                <button id="searchBtn" class="search-btn">Rechercher</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Résultats de recherche -->
+    <section id="services" class="results">
+        <div class="container">
+            <h2>Résultats de recherche</h2>
+            <div id="resultsContainer" class="results-grid">
+                <!-- Les résultats seront affichés ici dynamiquement -->
+                <div class="no-results">
+                    <p>Utilisez les filtres ci-dessus pour trouver des services</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section de commande -->
+    <section class="order-section">
+        <div class="container">
+            <h2>Passer une commande</h2>
+            <div class="order-form-container">
+                <form id="orderForm" class="order-form">
+                    <div class="form-group">
+                        <label for="clientName">Nom complet:</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail">Email:</label>
+                        <input type="email" id="clientEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhone">Téléphone:</label>
+                        <input type="tel" id="clientPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceType">Type de service:</label>
+                        <select id="serviceType" required>
+                            <option value="">Sélectionnez un service</option>
+                            <option value="hotel">Hôtel</option>
+                            <option value="agence-voyage">Agence de voyage</option>
+                            <option value="engin-lourd">Engin lourd</option>
+                            <option value="formation">Formation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceDetails">Détails de la commande:</label>
+                        <textarea id="serviceDetails" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Passer la commande</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section confirmation de commande -->
+    <section id="orderConfirmation" class="confirmation-section hidden">
+        <div class="container">
+            <div class="confirmation-card">
+                <div class="confirmation-header">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Commande confirmée!</h2>
+                </div>
+                <div class="confirmation-body">
+                    <p id="confirmationMessage">Votre commande a été enregistrée avec succès.</p>
+                    <div class="confirmation-actions">
+                        <button id="printConfirmation" class="print-btn">
+                            <i class="fas fa-print"></i> Imprimer la confirmation
+                        </button>
+                        <button id="newOrder" class="new-order-btn">Nouvelle commande</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>WeneedApp</h3>
+                <p>Connecter les services essentiels à travers le Cameroun</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-globe"></i> <a href="https://www.scsmaubmar.org" target="_blank">www.scsmaubmar.org</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:support@scsmaubmar.org">support@scsmaubmar.org</a></p>
+                    <p><i class="fas fa-phone"></i> +237 620 307 439 ou 674 651 856</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#hotels">Hôtels</a></li>
+                    <li><a href="#voyages">Agences de voyage</a></li>
+                    <li><a href="#engins">Engins lourds</a></li>
+                    <li><a href="#formations">Formations</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#apropos">À propos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WeneedApp. Tous droits réservés.</p>
+            <p>Power by <a href="https://www.scsmaubmar.org" target="_blank">SCSM Sarl-LabMath and CIE</a></p>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+    <script src="config.js"></script>
+</body>
+</html>

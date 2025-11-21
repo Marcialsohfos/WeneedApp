@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - WeneedApp</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <h1><i class="fas fa-handshake"></i> WeneedApp</h1>
+                </div>
+                <p>Connectez-vous à votre espace</p>
+            </div>
+
+            <!-- SUPPRIMER novalidate et required des champs -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="userType">Type d'utilisateur:</label>
+                    <select id="userType">
+                        <option value="">Choisir un profil</option>
+                        <option value="user">Utilisateur</option>
+                        <option value="admin">Administrateur</option>
+                    </select>
+                </div>
+
+                <!-- Champs Utilisateur -->
+                <div id="userFields" class="user-fields">
+                    <div class="form-group">
+                        <label for="userName">Nom complet:</label>
+                        <!-- SUPPRIMER required -->
+                        <input type="text" id="userName" placeholder="Votre nom complet">
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email:</label>
+                        <!-- SUPPRIMER required -->
+                        <input type="email" id="userEmail" placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="userPhone">Téléphone:</label>
+                        <input type="tel" id="userPhone" placeholder="+237 XXX XXX XXX">
+                    </div>
+                </div>
+
+                <!-- Champs Admin -->
+                <div id="adminFields" class="admin-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="adminCode">Code d'accès administrateur:</label>
+                        <div class="password-input">
+                            <!-- SUPPRIMER required -->
+                            <input type="password" id="adminCode" placeholder="Code administrateur fourni">
+                            <button type="button" class="toggle-password" onclick="togglePassword('adminCode')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="hint">Contactez l'équipe technique pour obtenir le code d'accès administrateur</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+
+                <div class="auth-info">
+                    <h4>Informations:</h4>
+                    <p><strong>Utilisateur:</strong> Accès immédiat à la vitrine</p>
+                    <p><strong>Admin:</strong> Code requis pour la gestion</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="config.js"></script>
+
+</body>
+</html>
